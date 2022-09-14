@@ -49,6 +49,7 @@ Adding large reference files to docker containers should be avoided where possib
 
 ### Example directory structure
 
+```
 └── samtools
     └── 0.19
         └── Dockerfile
@@ -57,6 +58,7 @@ Adding large reference files to docker containers should be avoided where possib
 └── bcftools
     └── 1.16
         └── Dockerfile
+```
 
 ### Example GitHub repo path
 

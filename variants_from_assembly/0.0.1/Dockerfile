@@ -1,4 +1,4 @@
-# TAG dnastack/variants_from_assembly:latest
+# TAG dnastack/variants_from_assembly:0.0.1
 FROM ubuntu:bionic
 
 RUN apt-get -qq update && \
