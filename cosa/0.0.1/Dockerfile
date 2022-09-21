@@ -1,4 +1,3 @@
-# TAG dnastack/cosa:c0a2fa8
 FROM ubuntu:bionic
 
 MAINTAINER Heather Ward <heather@dnastack.com>
@@ -45,12 +44,14 @@ RUN cd /opt/samtools-${SAMTOOLS_VERSION} && \
 	make && \
 	make install
 
+# minimap2
 RUN wget https://github.com/lh3/minimap2/releases/download/v${MINIMAP2_VERSION}/minimap2-${MINIMAP2_VERSION}_x64-linux.tar.bz2 && \
 	tar -jxvf minimap2-${MINIMAP2_VERSION}_x64-linux.tar.bz2 --directory /opt/ && \
 	rm minimap2-${MINIMAP2_VERSION}_x64-linux.tar.bz2
 
 ENV PATH $PATH:/opt/minimap2-${MINIMAP2_VERSION}_x64-linux/
 
+# bamtools
 RUN cd /opt && git clone https://github.com/pezmaster31/bamtools.git
 RUN cd /opt/bamtools && \
 	git checkout ${BAMTOOLS_GIT_HASH} && \

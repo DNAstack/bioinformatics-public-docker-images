@@ -1,80 +1,54 @@
 # bioinformatics-public-docker-images
 
-## The `bioinformatics-public-docker-images` repository
+This repository contains public docker images used for workflow execution.
 
-The `docker` repository contains one subdirectory for each docker image that exists for all projects. This subdirectory should be named the same as the docker image that is built from it, excluding the registry hostname and the tag.
+DNAstack's public images built from the files in this repository are hosted [on Dockerhub](https://hub.docker.com/u/dnastack).
 
-e.g. the Dockerfile for an image tagged `hkeward/samtools:0.19` should be in a directory titled `samtools/0.19`; an image tagged `hkeward/some/path/samtools:1.15` should likewise be in a directory named `samtools/1.15`.
+
+## Directory structure
+
+Each tool or set of tools should have its own directory. This directory should have the same name as the docker image that is built from it, excluding the container registry. Within the directory should be a subdirectory specifying the image version, within which the Dockerfile and other required files can be found.
+
+The directory structure determines the name and version tag for the resulting image. For example, the image built from the Dockerfile located at the path `bioinformatics-public-docker-images/${tool}/${version}/Dockerfile` will be tagged as `dnastack/${tool}:${version}`.
+
+See [image naming and versioning](#image-naming-and-versioning) for information on how images should be named and versioned.
+
+Different versions of a tool or set of tools should be nested under the tool/image name.
 
 ```
-`bioinformatics-public-docker-images` repo
-└── samtools
-    └── 1.15
-        └── Dockerfile
-└── bcftools
-    └── 1.16
-	    └── Dockerfile
-
+bioinformatics-public-docker-images
+├── samtools
+│  └── 1.15
+│      └── Dockerfile
+├── bcftools_r
+│   ├── 1.1.5_4.2.1
+│   │   └── Dockerfile
+│   └── 1.1.6_4.2.1
+│       └── Dockerfile
+├── bwa_samtools
+│   └── 0.7.17_1.16.1
+│       └── Dockerfile
 ...
-
-└── tool
-    └── version
+├── tool
+│   └── version
+│       └── Dockerfile
+└── toolA_toolB
+    └── versionA_versionB
         └── Dockerfile
 ```
 
-If multiple versions of a tool have separate docker images, they should be nested under the tool/image name, e.g.
 
-```
-`bioinformatics-public-docker-images` repo
-└── samtools
-    ├── 0.19
-    │   └── Dockerfile
-    └── 1.15
-        └── Dockerfile
-```
+## Image naming and versioning
 
-## Image versioning
+Follow this handy flowchart!
 
-There are two versioning schemes in place:
-
-1. If an image contains a single tool, e.g. samtools, the version should be set to the tool version.
-2. If an image contains multiple tools, [semantic versioning](https://semver.org/) should be used.
+![Docker image naming and versioning flowchart](image_naming_versioning_flowchart.png)
 
 
-### Dockerfiles
+## General best practices
 
-The first line of every Dockerfile should follow the format:
-
-```
-# TAG container_registry/tool_name:version
-```
-
-Secrets should never be written into docker images. If secrets are needed as part of workflow execution, they should be provided as workflow inputs.
-
-Adding large reference files to docker containers should be avoided where possible; provide them as workflow inputs.
-
-
-## Example directory structure
-
-```
-└── samtools
-    └── 0.19
-        └── Dockerfile
-    └── 1.15
-        └── Dockerfile
-└── bcftools
-    └── 1.16
-        └── Dockerfile
-```
-
-## Example GitHub repo path
-
-The version should be tag of docker image.
-
-`/DNAstack/bioinformatics-public-docker-image/tool/version/Dockerfile`
-
-## Example docker image path
-
-The tag should be version of tool.
-
-`~{container_registry}/tool:version`
+- The Dockerfile should always be named Dockerfile
+- Do not write secrets into docker images; if secrets are needed as part of workflow execution, they should be provided as workflow inputs
+- Avoid adding large reference files to docker images where possible; provide as workflow inputs
+- Do not use the `latest` tag unless you _really_ need things to update automatically; this is prone to breaking
+- OS repos and versions of tools in these repos change; prioritize installing tools directly from source
