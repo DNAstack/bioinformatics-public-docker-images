@@ -1,5 +1,7 @@
 FROM ubuntu:bionic
 
+MAINTAINER Heather Ward <heather@dnastack.com>
+
 RUN apt-get -qq update && \
 	apt-get -qq install \
 	curl \
