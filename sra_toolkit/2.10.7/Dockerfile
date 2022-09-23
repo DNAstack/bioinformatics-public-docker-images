@@ -1,4 +1,3 @@
-# TAG dnastack/sra-toolkit:2.10.7
 FROM ubuntu:bionic
 
 MAINTAINER Heather Ward <heather@dnastack.com>

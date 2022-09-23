@@ -1,4 +1,3 @@
-# TAG dnastack/nextclade:2.4.0
 FROM ubuntu:xenial
 
 MAINTAINER Heather Ward <heather@danstack.com>
