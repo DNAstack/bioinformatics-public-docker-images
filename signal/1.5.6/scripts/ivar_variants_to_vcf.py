@@ -43,14 +43,18 @@ def ivar_variants_to_vcf(FileIn, FileOut):
         '##FORMAT=<ID=ALT_QUAL,Number=1,Type=Integer,Description="Mean quality of alternate base">\n'
         '##FORMAT=<ID=ALT_FREQ,Number=1,Type=Float,Description="Frequency of alternate base">\n'
     )
-    header += "##pipeline=https://github.com/jaleezyy/covid-19-signal/tree/{}\n".format(
-        os.environ["SIGNAL_VERSION"]
+    header += (
+        "##pipeline=https://github.com/jaleezyy/covid-19-signal/tree/v{}\n".format(
+            os.environ["SIGNAL_VERSION"]
+        )
     )
 
     try:
         header += "##contig=<ID={}>\n".format(os.environ["viral_reference_contig_name"])
     except KeyError:
-        raise SystemExit("[ERROR] viral_reference_contig_name not defined in environment; could not convert tsv to vcf")
+        raise SystemExit(
+            "[ERROR] viral_reference_contig_name not defined in environment; could not convert tsv to vcf"
+        )
 
     header += (
         "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t" + filename + "\n"

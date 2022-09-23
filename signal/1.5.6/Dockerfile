@@ -1,4 +1,3 @@
-# TAG dnastack/signal:e6cae1e
 FROM continuumio/miniconda3:4.9.2
 
 # Based on https://github.com/jaleezyy/covid-19-signal/blob/master/resources/Dockerfile_pipeline
@@ -30,17 +29,15 @@ RUN wget https://storage.googleapis.com/dnastack-data-ingestion-storage/resource
 ENV KRAKEN2_DB /data/Kraken2/db
 ENV COMPOSITE_REFERENCE /data/composite_human_viral_reference/composite_human_viral_reference.fna
 
-# install snakemake and system dependencies
+# snakemake and system dependencies
 RUN conda create --name snakemake --channel conda-forge --channel bioconda snakemake==6.0.5 pandas
 
-# clone the workflow repo (tag later to specific release to match software version)
-RUN git clone https://github.com/jaleezyy/covid-19-signal
+ENV SIGNAL_VERSION 1.5.6
+RUN wget https://github.com/jaleezyy/covid-19-signal/archive/refs/tags/v${SIGNAL_VERSION}.tar.gz && \
+	tar -zxvf v${SIGNAL_VERSION}.tar.gz --directory /opt && \
+	rm v${SIGNAL_VERSION}.tar.gz
 
-# set workdir to pipeline folder in repo
-WORKDIR /covid-19-signal
-
-ENV SIGNAL_VERSION e6cae1eaa375409f368aa50c6616e8bb24e0243a
-RUN git checkout ${SIGNAL_VERSION}
+WORKDIR /opt/covid-19-signal-${SIGNAL_VERSION}
 
 # install all snakemake rule conda envs using dummy snakemake file
 COPY ./dependencies resources/dependencies

@@ -1,4 +1,3 @@
-# TAG dnastack/bwa_samtools:0.7.17
 FROM ubuntu:xenial
 
 MAINTAINER Karen Fang <karen@dnastack.com>
