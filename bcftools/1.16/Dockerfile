@@ -18,7 +18,8 @@ RUN apt-get -qq update && \
 		zlib1g-dev \
 		libbz2-dev \
 		jq \
-		curl && \
+		curl \
+		tabix && \
 	rm -rf /var/lib/apt/lists/*
 
 # bcftools
