@@ -2,7 +2,7 @@ FROM continuumio/miniconda3:4.9.2-alpine
 
 MAINTAINER Heather Ward <heather@dnastack.com>
 
-ENV PANGOLIN_VERSION 4.1.2
+ENV PANGOLIN_VERSION 4.1.3
 
 RUN apk update && \
 	apk add git bash
