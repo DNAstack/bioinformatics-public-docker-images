@@ -2,6 +2,11 @@ FROM ubuntu:bionic
 
 MAINTAINER Heather Ward <heather@dnastack.com>
 
+ARG IMAGE_NAME
+ENV IMAGE_NAME "${IMAGE_NAME}"
+ARG IMAGE_TAG
+ENV IMAGE_TAG "${IMAGE_TAG}"
+
 RUN apt-get -qq update && \
 	apt-get -qq install \
 		wget \
@@ -10,7 +15,7 @@ RUN apt-get -qq update && \
 		ncbi-entrez-direct \
 		rs
 
-ENV SRATOOLKIT_VERSION 2.10.7
+ENV SRATOOLKIT_VERSION "${IMAGE_TAG}"
 RUN wget "ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/${SRATOOLKIT_VERSION}/sratoolkit.${SRATOOLKIT_VERSION}-ubuntu64.tar.gz" && \
 	tar -zxvf "sratoolkit.${SRATOOLKIT_VERSION}-ubuntu64.tar.gz" --directory /opt/ && \
 	rm "sratoolkit.${SRATOOLKIT_VERSION}-ubuntu64.tar.gz"

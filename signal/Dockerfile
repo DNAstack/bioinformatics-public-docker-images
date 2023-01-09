@@ -3,6 +3,11 @@ FROM continuumio/miniconda3:4.9.2
 # Based on https://github.com/jaleezyy/covid-19-signal/blob/master/resources/Dockerfile_pipeline
 MAINTAINER Heather Ward <heather@dnastack.com>
 
+ARG IMAGE_NAME
+ENV IMAGE_NAME "${IMAGE_NAME}"
+ARG IMAGE_TAG
+ENV IMAGE_TAG "${IMAGE_TAG}"
+
 RUN apt-get -qq --allow-releaseinfo-change update && \
 	apt-get -qq install \
 		curl \
@@ -32,7 +37,7 @@ ENV COMPOSITE_REFERENCE /data/composite_human_viral_reference/composite_human_vi
 # snakemake and system dependencies
 RUN conda create --name snakemake --channel conda-forge --channel bioconda snakemake==6.0.5 pandas
 
-ENV SIGNAL_VERSION 1.5.6
+ENV SIGNAL_VERSION "${IMAGE_TAG}"
 RUN wget https://github.com/jaleezyy/covid-19-signal/archive/refs/tags/v${SIGNAL_VERSION}.tar.gz && \
 	tar -zxvf v${SIGNAL_VERSION}.tar.gz --directory /opt && \
 	rm v${SIGNAL_VERSION}.tar.gz

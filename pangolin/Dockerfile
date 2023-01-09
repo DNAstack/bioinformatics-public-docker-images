@@ -2,7 +2,12 @@ FROM continuumio/miniconda3:4.9.2-alpine
 
 MAINTAINER Heather Ward <heather@dnastack.com>
 
-ENV PANGOLIN_VERSION 4.1.3
+ARG IMAGE_NAME
+ENV IMAGE_NAME "${IMAGE_NAME}"
+ARG IMAGE_TAG
+ENV IMAGE_TAG "${IMAGE_TAG}"
+
+ENV PANGOLIN_VERSION "${IMAGE_TAG}"
 
 RUN apk update && \
 	apk add git bash

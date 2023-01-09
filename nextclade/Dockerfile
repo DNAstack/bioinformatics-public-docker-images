@@ -2,12 +2,17 @@ FROM ubuntu:xenial
 
 MAINTAINER Heather Ward <heather@danstack.com>
 
+ARG IMAGE_NAME
+ENV IMAGE_NAME "${IMAGE_NAME}"
+ARG IMAGE_TAG
+ENV IMAGE_TAG "${IMAGE_TAG}"
+
 RUN apt-get -qq update && \
 	apt-get -qq install \
 		wget \
 		jq
 
-ENV NEXTCLADE_VERSION 2.4.0
+ENV NEXTCLADE_VERSION "${IMAGE_TAG}"
 RUN mkdir -p /opt/nextclade && \
 	wget -O /opt/nextclade/nextclade https://github.com/nextstrain/nextclade/releases/download/${NEXTCLADE_VERSION}/nextclade-x86_64-unknown-linux-gnu && \
 	chmod +x /opt/nextclade/nextclade

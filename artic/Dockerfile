@@ -2,7 +2,12 @@ FROM continuumio/miniconda3:4.10.3 AS condabuild
 
 MAINTAINER Heather Ward <heather@dnastack.com>
 
-ENV ARTIC_VERSION 1.3.0
+ARG IMAGE_NAME
+ENV IMAGE_NAME "${IMAGE_NAME}"
+ARG IMAGE_TAG
+ENV IMAGE_TAG "${IMAGE_TAG}"
+
+ENV ARTIC_VERSION "${IMAGE_TAG}"
 RUN wget https://github.com/connor-lab/ncov2019-artic-nf/archive/refs/tags/v${ARTIC_VERSION}.tar.gz && \
 	tar -zxvf v${ARTIC_VERSION}.tar.gz --directory /opt && \
 	rm v${ARTIC_VERSION}.tar.gz

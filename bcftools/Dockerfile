@@ -2,6 +2,11 @@ FROM ubuntu:xenial
 
 MAINTAINER Karen Fang <karen@dnastack.com>
 
+ARG IMAGE_NAME
+ENV IMAGE_NAME "${IMAGE_NAME}"
+ARG IMAGE_TAG
+ENV IMAGE_TAG "${IMAGE_TAG}"
+
 RUN apt-get -qq update && \
 	apt-get -qq install \
 		build-essential \
@@ -23,7 +28,7 @@ RUN apt-get -qq update && \
 	rm -rf /var/lib/apt/lists/*
 
 # bcftools
-ENV BCFTOOLS_VERSION 1.16
+ENV BCFTOOLS_VERSION "${IMAGE_TAG}"
 RUN wget https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERSION}/bcftools-${BCFTOOLS_VERSION}.tar.bz2 && \
 	tar -xvf bcftools-${BCFTOOLS_VERSION}.tar.bz2 --directory /opt && \
 	rm bcftools-${BCFTOOLS_VERSION}.tar.bz2

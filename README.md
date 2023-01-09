@@ -7,34 +7,66 @@ DNAstack's public images built from the files in this repository are hosted [on 
 
 ## Directory structure
 
-Each tool or set of tools should have its own directory. This directory should have the same name as the docker image that is built from it, excluding the container registry. Within the directory should be a subdirectory specifying the image version, within which the Dockerfile and other required files can be found.
+Each tool or set of tools should have its own directory containing at minimum two files: a `Dockerfile`, and a `build.env` file. If docker definitions for multiple versions of the same tool exist (e.g. samtools version 0.19 and version 1.15), they can be further divided into subdirectories within the `samtools` directory, named by the tool version. Each of these version subdirectories should contain a `Dockerfile` and a `build.env` file.
 
-The directory structure determines the name and version tag for the resulting image. For example, the image built from the Dockerfile located at the path `bioinformatics-public-docker-images/${tool}/${version}/Dockerfile` will be tagged as `dnastack/${tool}:${version}`.
+The `build.env` file is used to specify the name and version tag for the docker image defined by the corresponding `Dockerfile`. It must contain at minimum the following variable:
+
+- `IMAGE_NAME`
+- `IMAGE_TAG`
+
+Additional variables can be added to the `build.env` file; all variables defined in the `build.env` file will be made available when the docker image is being built as build arguments.
+
+The variable `NOBUILD` can be set to `true` to enable skipping the associated Docker image build when running the `build_docker_images` script.
+
+Example `build.env` file:
+```
+IMAGE_NAME=samtools
+IMAGE_TAG=1.15
+HTSLIB_VERSION=1.12
+```
 
 See [image naming and versioning](#image-naming-and-versioning) for information on how images should be named and versioned.
 
-Different versions of a tool or set of tools should be nested under the tool/image name.
 
+Example directory structure:
 ```
 bioinformatics-public-docker-images
-├── samtools
-│  └── 1.15
-│      └── Dockerfile
 ├── bcftools_r
-│   ├── 1.1.5_4.2.1
-│   │   └── Dockerfile
-│   └── 1.1.6_4.2.1
-│       └── Dockerfile
+│   ├── build.env
+│   └── Dockerfile
 ├── bwa_samtools
-│   └── 0.7.17_1.16.1
-│       └── Dockerfile
+│   ├── build.env
+│   └── Dockerfile
+├── samtools
+│  ├── 0.19
+│  │   ├── build.env
+│  │   └── Dockerfile
+│  └── 1.15
+│      ├── build.env
+│      └── Dockerfile
 ...
-├── tool
-│   └── version
-│       └── Dockerfile
+├── toolA
+│   ├── build.env
+│   └── Dockerfile
 └── toolA_toolB
-    └── versionA_versionB
-        └── Dockerfile
+    ├── build.env
+    └── Dockerfile
+```
+
+Docker images can be built and tagged using [the build_docker_images script](./build_docker_images).
+
+```bash
+# build all docker images in the repo
+./build_docker_images
+
+# build docker images found in a directory (and its subdirectories)
+./build_docker_images -d some_path
+
+# tag images using the provided container registry
+./build_docker_images -c dnastack
+
+# build and push docker images to the provided container registry
+./build_docker_images -c dnastack -p
 ```
 
 
@@ -52,3 +84,4 @@ Follow this handy flowchart!
 - Avoid adding large reference files to docker images where possible; provide as workflow inputs
 - Do not use the `latest` tag unless you _really_ need things to update automatically; this is prone to breaking
 - OS repos and versions of tools in these repos change; prioritize installing tools directly from source
+- The `Dockerfile` should consume all build arguments defined in the `build.env` file, e.g. by setting them as image environment variables
