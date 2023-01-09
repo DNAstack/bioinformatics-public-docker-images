@@ -1,4 +1,6 @@
-FROM continuumio/miniconda3:4.9.2
+ARG MINICONDA3_VERSION
+FROM continuumio/miniconda3:${MINICONDA3_VERSION}
+ENV MINICONDA3_VERSION "${MINICONDA3_VERSION}"
 
 # Based on https://github.com/jaleezyy/covid-19-signal/blob/master/resources/Dockerfile_pipeline
 MAINTAINER Heather Ward <heather@dnastack.com>
@@ -37,7 +39,8 @@ ENV COMPOSITE_REFERENCE /data/composite_human_viral_reference/composite_human_vi
 # snakemake and system dependencies
 RUN conda create --name snakemake --channel conda-forge --channel bioconda snakemake==6.0.5 pandas
 
-ENV SIGNAL_VERSION "${IMAGE_TAG}"
+ARG SIGNAL_VERSION
+ENV SIGNAL_VERSION "${SIGNAL_VERSION}"
 RUN wget https://github.com/jaleezyy/covid-19-signal/archive/refs/tags/v${SIGNAL_VERSION}.tar.gz && \
 	tar -zxvf v${SIGNAL_VERSION}.tar.gz --directory /opt && \
 	rm v${SIGNAL_VERSION}.tar.gz

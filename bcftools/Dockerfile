@@ -28,7 +28,8 @@ RUN apt-get -qq update && \
 	rm -rf /var/lib/apt/lists/*
 
 # bcftools
-ENV BCFTOOLS_VERSION "${IMAGE_TAG}"
+ARG BCFTOOLS_VERSION
+ENV BCFTOOLS_VERSION "${BCFTOOLS_VERSION}"
 RUN wget https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERSION}/bcftools-${BCFTOOLS_VERSION}.tar.bz2 && \
 	tar -xvf bcftools-${BCFTOOLS_VERSION}.tar.bz2 --directory /opt && \
 	rm bcftools-${BCFTOOLS_VERSION}.tar.bz2

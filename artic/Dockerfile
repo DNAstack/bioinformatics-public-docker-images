@@ -7,7 +7,8 @@ ENV IMAGE_NAME "${IMAGE_NAME}"
 ARG IMAGE_TAG
 ENV IMAGE_TAG "${IMAGE_TAG}"
 
-ENV ARTIC_VERSION "${IMAGE_TAG}"
+ARG ARTIC_VERSION
+ENV ARTIC_VERSION "${ARTIC_VERSION}"
 RUN wget https://github.com/connor-lab/ncov2019-artic-nf/archive/refs/tags/v${ARTIC_VERSION}.tar.gz && \
 	tar -zxvf v${ARTIC_VERSION}.tar.gz --directory /opt && \
 	rm v${ARTIC_VERSION}.tar.gz

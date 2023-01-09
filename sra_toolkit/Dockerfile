@@ -15,7 +15,8 @@ RUN apt-get -qq update && \
 		ncbi-entrez-direct \
 		rs
 
-ENV SRATOOLKIT_VERSION "${IMAGE_TAG}"
+ARG SRATOOLKIT_VERSION
+ENV SRATOOLKIT_VERSION "${SRATOOLKIT_VERSION}"
 RUN wget "ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/${SRATOOLKIT_VERSION}/sratoolkit.${SRATOOLKIT_VERSION}-ubuntu64.tar.gz" && \
 	tar -zxvf "sratoolkit.${SRATOOLKIT_VERSION}-ubuntu64.tar.gz" --directory /opt/ && \
 	rm "sratoolkit.${SRATOOLKIT_VERSION}-ubuntu64.tar.gz"

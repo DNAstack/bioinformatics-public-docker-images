@@ -13,7 +13,8 @@ RUN cd /opt/samtools-${SAMTOOLS_VERSION}/htslib-${HTSLIB_VERSION} && \
 	make && \
 	make install
 
-ENV IVAR_VERSION "${IMAGE_TAG}"
+ARG IVAR_VERSION
+ENV IVAR_VERSION "${IVAR_VERSION}"
 RUN wget https://github.com/andersen-lab/ivar/archive/refs/tags/v${IVAR_VERSION}.tar.gz && \
 	tar -zxvf v${IVAR_VERSION}.tar.gz --directory /opt && \
 	rm v${IVAR_VERSION}.tar.gz

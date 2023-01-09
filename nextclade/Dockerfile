@@ -12,7 +12,8 @@ RUN apt-get -qq update && \
 		wget \
 		jq
 
-ENV NEXTCLADE_VERSION "${IMAGE_TAG}"
+ARG NEXTCLADE_VERSION
+ENV NEXTCLADE_VERSION "${NEXTCLADE_VERSION}"
 RUN mkdir -p /opt/nextclade && \
 	wget -O /opt/nextclade/nextclade https://github.com/nextstrain/nextclade/releases/download/${NEXTCLADE_VERSION}/nextclade-x86_64-unknown-linux-gnu && \
 	chmod +x /opt/nextclade/nextclade

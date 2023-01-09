@@ -16,14 +16,16 @@ The `build.env` file is used to specify the name and version tag for the docker 
 
 Additional variables can be added to the `build.env` file; all variables defined in the `build.env` file will be made available when the docker image is being built as build arguments.
 
-The variable `NOBUILD` can be set to `true` to enable skipping the associated Docker image build when running the `build_docker_images` script.
+The `IMAGE_TAG` variable can be built using other env variables defined in the `build.env` file, as long as those other variables are defined before the `IMAGE_TAG` definition. For example, the following `IMAGE_TAG` would be set to 0.7.8_1.15:
 
-Example `build.env` file:
 ```
-IMAGE_NAME=samtools
-IMAGE_TAG=1.15
-HTSLIB_VERSION=1.12
+IMAGE_NAME=bwa_samtools
+BWA_VERSION=0.7.8
+SAMTOOLS_VERSION=1.15
+IMAGE_TAG=${BWA_VERSION}_${SAMTOOLS_VERSION}
 ```
+
+The variable `NOBUILD` can be set to `true` to enable skipping the associated Docker image build when running the `build_docker_images` script.
 
 See [image naming and versioning](#image-naming-and-versioning) for information on how images should be named and versioned.
 

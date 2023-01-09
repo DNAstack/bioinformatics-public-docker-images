@@ -33,6 +33,7 @@ build_docker_image() {
   local dockerfile_path="$1"
   local docker_context_dir="$2"
   local -a build_args
+  local -a varnames
   local env_file="${docker_context_dir}/build.env"
 
   if [[ -s "${env_file}" ]]; then
@@ -42,7 +43,19 @@ build_docker_image() {
       return
     fi
     while read -r build_arg || [[ -n "${build_arg}" ]]; do
-      build_args+=(--build-arg "${build_arg}")
+      varname=$(echo "${build_arg}" | cut -d = -f 1)
+      value=$(echo "${build_arg}" | cut -d = -f 2 | envsubst)
+
+      set +u
+      if [[ -n "${!varname}" ]]; then
+        err "[WARN] Overwriting existing env variable [${varname}], value [${!varname}] with value [${value}]"
+      fi
+      set -u
+
+      export "${varname}=${value}"
+
+      build_args+=(--build-arg "${varname}=${value}")
+      varnames+=("${varname}")
     done < "${env_file}"
   else
     err "No env file found for docker context [${docker_context_dir}]"
@@ -51,24 +64,26 @@ build_docker_image() {
   fi
 
   local image_name
-  image_name=$(grep 'IMAGE_NAME=' "${env_file}" || true)
+  local image_tag
+  for varname in "${varnames[@]}"; do
+    if [[ "${varname}" == "IMAGE_NAME" ]]; then
+      image_name=${!varname}
+    elif [[ "${varname}" == "IMAGE_TAG" ]]; then
+      image_tag=${!varname}
+    fi
+    unset "${varname}"
+  done
+
   if [[ -z "${image_name}" ]]; then
     err "No IMAGE_NAME defined for docker context [${docker_context_dir}]"
     err "Set IMAGE_NAME in [${env_file}] and try again."
     exit 1
-  else
-    image_name=$(echo "${image_name}" | cut -d '=' -f 2)
   fi
 
-
-  local image_tag
-  image_tag=$(grep 'IMAGE_TAG=' "${env_file}" || true)
   if [[ -z "${image_tag}" ]]; then
     err "No IMAGE_TAG defined for docker context [${docker_context_dir}]"
     err "Set IMAGE_TAG in [${env_file}] and try again."
     exit 1
-  else
-    image_tag=$(echo "${image_tag}" | cut -d '=' -f 2)
   fi
 
   local tagged_image="${CONTAINER_REGISTRY:+"${CONTAINER_REGISTRY}/"}${image_name}:${image_tag}"
