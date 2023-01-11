@@ -33,48 +33,35 @@ See [image naming and versioning](#image-naming-and-versioning) for information 
 Example directory structure:
 ```
 bioinformatics-public-docker-images
-├── bcftools_r
-│   ├── build.env
-│   └── Dockerfile
-├── bwa_samtools
-│   ├── build.env
-│   └── Dockerfile
-├── samtools
-│  ├── 0.19
-│  │   ├── build.env
-│  │   └── Dockerfile
-│  └── 1.15
-│      ├── build.env
-│      └── Dockerfile
+└── docker
+    ├── bcftools_r
+    │   ├── build.env
+    │   └── Dockerfile
+    ├── bwa_samtools
+    │   ├── build.env
+    │   └── Dockerfile
+    ├── samtools
+    │   ├── 0.19
+    │   │   ├── build.env
+    │   │   └── Dockerfile
+    │   └── 1.15
+    │       ├── build.env
+    │       └── Dockerfile
 ...
-├── toolA
-│   ├── build.env
-│   └── Dockerfile
-└── toolA_toolB
-    ├── build.env
-    └── Dockerfile
+    ├── toolA
+    │   ├── build.env
+    │   └── Dockerfile
+    └── toolA_toolB
+        ├── build.env
+        └── Dockerfile
 ```
 
-Docker images can be built and tagged using [the build_docker_images script](./build_docker_images).
-
-```bash
-# build all docker images in the repo
-./build_docker_images
-
-# build docker images found in a directory (and its subdirectories)
-./build_docker_images -d some_path
-
-# tag images using the provided container registry
-./build_docker_images -c dnastack
-
-# build and push docker images to the provided container registry
-./build_docker_images -c dnastack -p
-```
+Docker images can be built and tagged using [the build_docker_images script](https://github.com/DNAstack/bioinformatics-scripts/blob/master/scripts/build_docker_images). Additional build script documentation may be found [here](https://github.com/DNAstack/bioinformatics-scripts#build-docker-images).
 
 
 ## Image naming and versioning
 
-Follow this handy flowchart!
+Images should be named and versioned using this flowchart:
 
 ![Docker image naming and versioning flowchart](image_naming_versioning_flowchart.png)
 
@@ -86,4 +73,5 @@ Follow this handy flowchart!
 - Avoid adding large reference files to docker images where possible; provide as workflow inputs
 - Do not use the `latest` tag unless you _really_ need things to update automatically; this is prone to breaking
 - OS repos and versions of tools in these repos change; prioritize installing tools directly from source
+- Make all tool versions environment variables (e.g. `ENV BCFTOOLS_VERSION 1.15.1`) that are controlled within the `build.env` file
 - The `Dockerfile` should consume all build arguments defined in the `build.env` file, e.g. by setting them as image environment variables
