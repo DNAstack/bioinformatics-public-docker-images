@@ -1,0 +1,80 @@
+ARG BCFTOOLS_VERSION
+FROM dnastack/bcftools:${BCFTOOLS_VERSION}
+ENV BCFTOOLS_VERSION "${BCFTOOLS_VERSION}"
+
+MAINTAINER Karen Fang <karen@dnastack.com>
+
+ARG IMAGE_NAME
+ENV IMAGE_NAME "${IMAGE_NAME}"
+ARG IMAGE_TAG
+ENV IMAGE_TAG "${IMAGE_TAG}"
+
+ARG FASTAVALIDATOR_VERSION
+ENV FASTAVALIDATOR_VERSION "${FASTAVALIDATOR_VERSION}"
+ARG YAMLLINT_VERSION
+ENV YAMLLINT_VERSION "${YAMLLINT_VERSION}"
+ARG HTML5VALIDATOR_VERSION
+ENV HTML5VALIDATOR_VERSION "${HTML5VALIDATOR_VERSION}"
+ARG PYBIGWIG_VERSION
+ENV PYBIGWIG_VERSION "${PYBIGWIG_VERSION}"
+
+RUN apt-get -qq update && \
+	apt-get -qq install \
+		build-essential \
+		wget \
+		curl \
+		unzip \
+		zlib1g-dev \
+		libreadline-gplv2-dev \
+		libncursesw5-dev \
+		libssl-dev \
+		libsqlite3-dev \
+		tk-dev \
+		libgdbm-dev \
+		libc6-dev \
+		libbz2-dev \
+		libffi-dev \
+		liblzma-dev \
+		tabix \
+		yamllint \
+		python3-dev \
+		python3-pip \
+		openjdk-8-jdk \
+		perl
+
+ARG PYTHON3_VERSION
+ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
+RUN curl -O https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON3_VERSION}.tar.xz && \
+	tar -xvf Python-${PYTHON3_VERSION}.tar.xz --directory /opt/ && \
+	rm Python-${PYTHON3_VERSION}.tar.xz
+RUN cd /opt/Python-${PYTHON3_VERSION} && \
+	./configure && \
+	make && \
+	make altinstall
+
+COPY ./requirements.txt /opt/requirements.txt
+RUN python3.9 -m pip install -r /opt/requirements.txt
+
+# samtools
+ARG SAMTOOLS_VERSION
+ENV SAMTOOLS_VERSION "${SAMTOOLS_VERSION}"
+RUN wget https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERSION}/samtools-${SAMTOOLS_VERSION}.tar.bz2 && \
+	tar -xvf samtools-${SAMTOOLS_VERSION}.tar.bz2 --directory /opt && \
+	rm samtools-${SAMTOOLS_VERSION}.tar.bz2
+RUN	cd /opt/samtools-${SAMTOOLS_VERSION} && \
+	autoheader && \
+	autoconf -Wno-syntax && \
+	./configure && \
+	make && \
+	make install
+
+# vcftools
+ARG VCFTOOLS_VERSION
+ENV VCFTOOLS_VERSION "${VCFTOOLS_VERSION}"
+RUN wget https://github.com/vcftools/vcftools/releases/download/v${VCFTOOLS_VERSION}/vcftools-${VCFTOOLS_VERSION}.tar.gz && \
+	tar -xvf vcftools-${VCFTOOLS_VERSION}.tar.gz --directory /opt && \
+	rm vcftools-${VCFTOOLS_VERSION}.tar.gz
+RUN	cd /opt/vcftools-${VCFTOOLS_VERSION} && \
+	./configure && \
+	make && \
+	make install
