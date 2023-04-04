@@ -17,6 +17,8 @@ ARG HTML5VALIDATOR_VERSION
 ENV HTML5VALIDATOR_VERSION "${HTML5VALIDATOR_VERSION}"
 ARG PYBIGWIG_VERSION
 ENV PYBIGWIG_VERSION "${PYBIGWIG_VERSION}"
+ARG PNGCHECK_VERSION
+ENV PNGCHECK_VERSION "${PNGCHECK_VERSION}"
 
 RUN apt-get -qq update && \
 	apt-get -qq install \
@@ -40,7 +42,8 @@ RUN apt-get -qq update && \
 		python3-dev \
 		python3-pip \
 		openjdk-8-jdk \
-		perl
+		perl \
+		pngcheck
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
