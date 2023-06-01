@@ -19,6 +19,8 @@ ARG PYBIGWIG_VERSION
 ENV PYBIGWIG_VERSION "${PYBIGWIG_VERSION}"
 ARG PNGCHECK_VERSION
 ENV PNGCHECK_VERSION "${PNGCHECK_VERSION}"
+ARG XMLLINT_VERSION
+ENV XMLLINT_VERSION "${XMLLINT_VERSION}"
 
 RUN apt-get -qq update && \
 	apt-get -qq install \
@@ -43,7 +45,8 @@ RUN apt-get -qq update && \
 		python3-pip \
 		openjdk-8-jdk \
 		perl \
-		pngcheck
+		pngcheck \
+		libxml2-utils
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
