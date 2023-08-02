@@ -15,7 +15,6 @@ RUN apt-get -qq update && \
 	python-minimal \
 	libreadline-dev \
 	wget \
-	time \
 	unzip
 
 # Add mothur
