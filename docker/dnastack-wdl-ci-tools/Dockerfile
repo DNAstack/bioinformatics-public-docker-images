@@ -21,6 +21,8 @@ ARG PNGCHECK_VERSION
 ENV PNGCHECK_VERSION "${PNGCHECK_VERSION}"
 ARG XMLLINT_VERSION
 ENV XMLLINT_VERSION "${XMLLINT_VERSION}"
+ARG QPDF_VERSION
+ENV QPDF_VERSION "${QPDF_VERSION}"
 
 RUN apt-get -qq update && \
 	apt-get -qq install \
@@ -46,7 +48,8 @@ RUN apt-get -qq update && \
 		openjdk-8-jdk \
 		perl \
 		pngcheck \
-		libxml2-utils
+		libxml2-utils \
+		qpdf
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
