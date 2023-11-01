@@ -23,8 +23,8 @@ WORKDIR /opt/pangolin-${PANGOLIN_VERSION}
 
 # Python 3.8.5 already installed along with recent version of pip
 # so remove Python and pip deps from environment.yml before installation
-RUN sed -i "$(grep -n 'python>=3.7' ./environment.yml | cut -f1 -d:)d" ./environment.yml && \
-	sed -i "$(grep -n pip= ./environment.yml | cut -f1 -d:)d" ./environment.yml
+# Cannot remove pip since pango-designation v1.23.1; must specify version
+RUN sed -i "$(grep -n 'python>=3.7' ./environment.yml | cut -f1 -d:)d" ./environment.yml
 
 # Install the conda environment
 RUN conda env create --quiet -f ./environment.yml && conda clean -a
