@@ -23,6 +23,8 @@ ARG XMLLINT_VERSION
 ENV XMLLINT_VERSION "${XMLLINT_VERSION}"
 ARG QPDF_VERSION
 ENV QPDF_VERSION "${QPDF_VERSION}"
+ARG HDF5_TOOLS_VERSION
+ENV HDF5_TOOLS_VERSION "${HDF5_TOOLS_VERSION}"
 
 RUN apt-get -qq update && \
 	apt-get -qq install \
@@ -49,7 +51,8 @@ RUN apt-get -qq update && \
 		perl \
 		pngcheck \
 		libxml2-utils \
-		qpdf
+		qpdf \
+		hdf5-tools
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
