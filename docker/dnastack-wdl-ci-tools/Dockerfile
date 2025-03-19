@@ -52,7 +52,8 @@ RUN apt-get -qq update && \
 		pngcheck \
 		libxml2-utils \
 		qpdf \
-		hdf5-tools
+		hdf5-tools \
+		gfortran
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
