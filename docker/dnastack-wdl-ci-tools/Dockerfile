@@ -63,7 +63,8 @@ RUN apt-get -qq update && \
 		libxml2-utils \
 		qpdf \
 		hdf5-tools \
-		gfortran
+		gfortran \
+		libpcre2-dev
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
