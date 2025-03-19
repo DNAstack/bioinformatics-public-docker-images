@@ -33,6 +33,17 @@ RUN apt-get -qq update && \
 		curl \
 		unzip \
 		zlib1g-dev \
+		libbz2-dev \
+		liblzma-dev \
+		libpcre3-dev \
+		libcurl4-openssl-dev \
+		libxml2-dev \
+		libssl-dev \
+		libfontconfig1-dev \
+		libtiff-dev \
+		libharfbuzz-dev \
+		libfribidi-dev \
+		libhdf5-dev \
 		libreadline-gplv2-dev \
 		libncursesw5-dev \
 		libssl-dev \
@@ -42,7 +53,6 @@ RUN apt-get -qq update && \
 		libc6-dev \
 		libbz2-dev \
 		libffi-dev \
-		liblzma-dev \
 		tabix \
 		yamllint \
 		python3-dev \
