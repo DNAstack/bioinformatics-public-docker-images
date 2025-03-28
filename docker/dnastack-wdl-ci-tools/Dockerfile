@@ -120,4 +120,6 @@ RUN ./configure --with-readline=no --with-x=no && \
 	make && \
 	make install
 
+RUN Rscript -e 'install.packages("SeuratObject", repos="http://cran.r-project.org")'
+
 WORKDIR /opt
