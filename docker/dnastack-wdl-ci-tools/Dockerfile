@@ -25,6 +25,8 @@ ARG QPDF_VERSION
 ENV QPDF_VERSION "${QPDF_VERSION}"
 ARG HDF5_TOOLS_VERSION
 ENV HDF5_TOOLS_VERSION "${HDF5_TOOLS_VERSION}"
+ARG IMAGEMAGICK_VERSION
+ENV IMAGEMAGICK_VERSION "${IMAGEMAGICK_VERSION}"
 
 RUN apt-get -qq update && \
 	apt-get -qq install \
@@ -64,7 +66,8 @@ RUN apt-get -qq update && \
 		qpdf \
 		hdf5-tools \
 		gfortran \
-		libpcre2-dev
+		libpcre2-dev \
+		imagemagick
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
