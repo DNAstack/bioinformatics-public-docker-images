@@ -25,6 +25,8 @@ ARG QPDF_VERSION
 ENV QPDF_VERSION "${QPDF_VERSION}"
 ARG HDF5_TOOLS_VERSION
 ENV HDF5_TOOLS_VERSION "${HDF5_TOOLS_VERSION}"
+ARG IMAGEMAGICK_VERSION
+ENV IMAGEMAGICK_VERSION "${IMAGEMAGICK_VERSION}"
 
 RUN apt-get -qq update && \
 	apt-get -qq install \
@@ -33,6 +35,17 @@ RUN apt-get -qq update && \
 		curl \
 		unzip \
 		zlib1g-dev \
+		libbz2-dev \
+		liblzma-dev \
+		libpcre3-dev \
+		libcurl4-openssl-dev \
+		libxml2-dev \
+		libssl-dev \
+		libfontconfig1-dev \
+		libtiff-dev \
+		libharfbuzz-dev \
+		libfribidi-dev \
+		libhdf5-dev \
 		libreadline-gplv2-dev \
 		libncursesw5-dev \
 		libssl-dev \
@@ -42,7 +55,6 @@ RUN apt-get -qq update && \
 		libc6-dev \
 		libbz2-dev \
 		libffi-dev \
-		liblzma-dev \
 		tabix \
 		yamllint \
 		python3-dev \
@@ -52,7 +64,10 @@ RUN apt-get -qq update && \
 		pngcheck \
 		libxml2-utils \
 		qpdf \
-		hdf5-tools
+		hdf5-tools \
+		gfortran \
+		libpcre2-dev \
+		imagemagick
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
@@ -90,3 +105,21 @@ RUN	cd /opt/vcftools-${VCFTOOLS_VERSION} && \
 	./configure && \
 	make && \
 	make install
+
+# R
+ARG R_VERSION
+ENV R_VERSION "${R_VERSION}"
+RUN wget https://cran.r-project.org/src/base/R-4/R-${R_VERSION}.tar.gz && \
+	tar -zxvf R-${R_VERSION}.tar.gz --directory /opt && \
+	rm R-${R_VERSION}.tar.gz
+
+ENV PATH "${PATH}:/opt/R-${R_VERSION}"
+
+WORKDIR /opt/R-${R_VERSION}
+RUN ./configure --with-readline=no --with-x=no && \
+	make && \
+	make install
+
+RUN Rscript -e 'install.packages("SeuratObject", repos="http://cran.r-project.org")'
+
+WORKDIR /opt
