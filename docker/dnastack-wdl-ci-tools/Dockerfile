@@ -67,7 +67,8 @@ RUN apt-get -qq update && \
 		hdf5-tools \
 		gfortran \
 		libpcre2-dev \
-		imagemagick
+		imagemagick \
+		zip
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
