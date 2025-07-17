@@ -27,6 +27,8 @@ ARG HDF5_TOOLS_VERSION
 ENV HDF5_TOOLS_VERSION "${HDF5_TOOLS_VERSION}"
 ARG IMAGEMAGICK_VERSION
 ENV IMAGEMAGICK_VERSION "${IMAGEMAGICK_VERSION}"
+ARG PYARROW_VERSION
+ENV PYARROW_VERSION "${PYARROW_VERSION}"
 
 RUN apt-get -qq update && \
 	apt-get -qq install \
@@ -67,7 +69,8 @@ RUN apt-get -qq update && \
 		hdf5-tools \
 		gfortran \
 		libpcre2-dev \
-		imagemagick
+		imagemagick \
+		zip
 
 ARG PYTHON3_VERSION
 ENV PYTHON3_VERSION "${PYTHON3_VERSION}"
