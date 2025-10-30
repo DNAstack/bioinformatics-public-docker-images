@@ -12,12 +12,15 @@ ENV IMAGE_TAG "${IMAGE_TAG}"
 ARG PANGOLIN_VERSION
 ENV PANGOLIN_VERSION "${PANGOLIN_VERSION}"
 
-RUN apk update && \
-	apk add git bash
+RUN apt-get -qq update \
+	&& apt-get -qq install \
+		build-essential \
+		git \
+	&& rm -rf /var/lib/apt/lists/*
 
-RUN wget https://github.com/cov-lineages/pangolin/archive/refs/tags/v${PANGOLIN_VERSION}.tar.gz && \
-	tar -zxvf v${PANGOLIN_VERSION}.tar.gz --directory /opt && \
-	rm v${PANGOLIN_VERSION}.tar.gz
+RUN wget https://github.com/cov-lineages/pangolin/archive/refs/tags/v${PANGOLIN_VERSION}.tar.gz \
+	&& tar -zxvf v${PANGOLIN_VERSION}.tar.gz --directory /opt \
+	&& rm v${PANGOLIN_VERSION}.tar.gz
 
 WORKDIR /opt/pangolin-${PANGOLIN_VERSION}
 
