@@ -2,7 +2,7 @@ ARG MINICONDA3_VERSION
 FROM continuumio/miniconda3:${MINICONDA3_VERSION}
 ENV MINICONDA3_VERSION "${MINICONDA3_VERSION}"
 
-MAINTAINER Heather Ward <heather@dnastack.com>
+LABEL maintainer="bioinformatics@dnastack.com"
 
 ARG IMAGE_NAME
 ENV IMAGE_NAME "${IMAGE_NAME}"
@@ -24,10 +24,9 @@ RUN wget https://github.com/cov-lineages/pangolin/archive/refs/tags/v${PANGOLIN_
 
 WORKDIR /opt/pangolin-${PANGOLIN_VERSION}
 
-# Python 3.8.5 already installed along with recent version of pip
-# so remove Python and pip deps from environment.yml before installation
-# Cannot remove pip since pango-designation v1.23.1; must specify version
-RUN sed -i "$(grep -n 'python>=3.7' ./environment.yml | cut -f1 -d:)d" ./environment.yml
+# Remove Python dep from environment.yml before installation
+# (miniconda3 base image already provides a suitable Python version)
+RUN sed -i "/- python>=/d" ./environment.yml
 
 # Install the conda environment
 RUN conda env create --quiet -f ./environment.yml && conda clean -a
