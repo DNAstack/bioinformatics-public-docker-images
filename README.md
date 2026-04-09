@@ -56,3 +56,7 @@ Images should be named and versioned using this flowchart:
 - OS repos and versions of tools in these repos change; prioritize installing tools directly from source
 - Make all tool versions environment variables (e.g. `ENV BCFTOOLS_VERSION 1.15.1`) that are controlled within the `build.env` file
 - The `Dockerfile` should ideally consume all build arguments defined in the `build.env` file, e.g. by setting them as image environment variables
+
+## Renovate
+
+This repository is excluded from Renovate automated dependency checks because it contains images that require proper testing before upgrading their dependencies.
